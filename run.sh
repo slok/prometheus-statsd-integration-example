@@ -9,7 +9,7 @@ if (( "$DOCKER_VERSION" < "190" )); then
 fi
 
 if (( "$COMPOSE_VERSION" < "150" )); then
-    echo "You need docker 1.5.0 at least"
+    echo "You need docker-compose 1.5.0 at least"
     exit 1
 fi
 
