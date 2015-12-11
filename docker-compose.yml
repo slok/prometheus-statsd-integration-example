@@ -1,0 +1,31 @@
+statsd_exporter:
+  image: prom/statsd_exporter
+  command: "-statsd.mapping-config=/tmp/statsd_mapping.conf"
+  ports:
+    - "9102:9102"
+    - "9125:9125/udp"
+  volumes:
+    - "./statsd_mapping.conf:/tmp/statsd_mapping.conf"
+
+prometheus:
+  image: prom/prometheus
+  command: "--config.file=/tmp/prometheus.yml --web.listen-address '0.0.0.0:9090'"
+  ports:
+    - "9090:9090"
+  volumes:
+    - "./prometheus.yml:/tmp/prometheus.yml"
+
+statsd:
+    image: dockerana/statsd
+    ports:
+      - "8125:8125/udp"
+      - "8126:8126"
+    volumes:
+      - "./statsd_config.js:/src/statsd/config.js"
+
+populator:
+    image: tavisto/alpine-bash
+    user: root
+    volumes:
+      - "./populate.sh:/tmp/populate.sh"
+    command: "/tmp/populate.sh 2"
